@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.eyedentify.vinitapenmatsa.backgound_video_capture.MainActivity">
+    tools:context="com.eyedentify.vinitapenmatsa.backgound_video_capture.Activity.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,5 +14,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capture Image"
+        tools:layout_editor_absoluteX="126dp"
+        tools:layout_editor_absoluteY="160dp" />
+
+    <Button
+        android:id="@+id/stopCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STOP IMAGE CAPTURE"
+        tools:layout_editor_absoluteX="106dp"
+        tools:layout_editor_absoluteY="231dp" />
 
 </android.support.constraint.ConstraintLayout>
