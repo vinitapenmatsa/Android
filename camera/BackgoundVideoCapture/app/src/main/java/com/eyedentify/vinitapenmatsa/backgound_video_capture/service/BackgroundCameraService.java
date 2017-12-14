@@ -21,6 +21,9 @@ import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by vinitapenmatsa on 12/13/17.
@@ -29,13 +32,7 @@ import java.io.File;
 public class BackgroundCameraService extends HiddenCameraService {
 
     private final IBinder mBinder = new LocalBinder();
-    CameraConfig mCameraConfig = new CameraConfig()
-            .getBuilder(getApplicationContext())
-            .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
-            .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
-            .setImageFormat(CameraImageFormat.FORMAT_JPEG)
-            .setImageRotation(CameraRotation.ROTATION_270)
-            .build();
+    CameraConfig mCameraConfig ;
 
 
     public class LocalBinder extends Binder{
@@ -51,7 +48,14 @@ public class BackgroundCameraService extends HiddenCameraService {
 
     @Override
     public void onCreate(){
-        super.onCreate();
+
+        mCameraConfig = new CameraConfig()
+                .getBuilder(getApplicationContext())
+                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
+                .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .setImageRotation(CameraRotation.ROTATION_270)
+                .build();
       if(ActivityCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
           if (HiddenCameraUtils.canOverDrawOtherApps(this)) {
               startCamera(mCameraConfig);
@@ -62,8 +66,22 @@ public class BackgroundCameraService extends HiddenCameraService {
 
     }
 
-    public void captureImage(){
+   Runnable captureImageService = new Runnable() {
+       @Override
+       public void run() {
+           takePicture();
+       }
+   };
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
+    public void captureImage(){
+        //executor.scheduleAtFixedRate(captureImageService , 0,3, TimeUnit.SECONDS);
+        takePicture();
+
+    }
+
+    public void stopImageCapture(){
+        executor.shutdown();
     }
 
 
